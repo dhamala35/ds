@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+struct node
+{
+int info;
+struct node *rlink;
+struct node *llink;
+};
+typedef struct node* NODE;
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+if(x==NULL)
+{
+printf("memorry allocation not possible\n");
+return 0;
+}
+return x;
+}
+NODE i_order(NODE root,int item)
+{
+NODE temp,cur,prev;
+temp=getnode();
+temp->info=item;
+temp->rlink=NULL;
+temp->llink=NULL;
+if(root==NULL)
+{
+return temp;
+}
+if(item<root->info)
+{
+temp->rlink=root;
+root->llink=temp;
+return temp;
+}
+prev=NULL;
+cur=root;
+while(cur!=NULL&& item>cur->info)
+{
+ prev=cur;
+
+ cur=cur->rlink;
+
+ }
+
+ if(cur!=NULL)
+
+ cur->llink=temp;
+
+ temp->rlink=cur;
+
+ prev->rlink=temp;
+ temp->llink=prev;
+ return root;
+ }
+NODE deletef(NODE root)
+{
+	NODE cur;
+	if(root==NULL)
+	{
+		printf("EMPTY LIST\n");
+		return 0;
+	}
+	cur=root->rlink;
+	printf("The deleted item s %d",root->info);
+	free(root);
+	return cur;
+}
+ void display(NODE root)
+
+ {
+
+ NODE curr;
+
+ if(root==NULL)
+{
+ printf("list full\n");
+return;
+}
+for(curr=root;curr!=NULL;curr=curr->rlink)
+{
+printf("%d\t",curr->info);
+}
+}
+ 
+
+ 
+
+
+
+ int main()
+
+ {
+ NODE root,head;
+head->llink=head;
+ root=NULL;
+ int item,i;
+ for(;;)
+ {
+ printf("enter 1 to input element in list,2 delete front 3 to display\n");
+ scanf("%d",&i);
+ switch(i)
+ {
+ case 1:
+ printf("enter element\n");
+ scanf("%d",&item);
+ root=i_order(root,item);
+ break;
+case 2: root=deletef(root);
+	break;
+
+ case 3:
+ display(root); break;
+ default: exit(0);
+ }
+ }
+ return 0;
+}
+
