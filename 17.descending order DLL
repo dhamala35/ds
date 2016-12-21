@@ -30,7 +30,7 @@ if(root==NULL)
 {
 return temp;
 }
-if(item<root->info)
+if(item>root->info)
 {
 temp->rlink=root;
 root->llink=temp;
@@ -38,7 +38,7 @@ return temp;
 }
 prev=NULL;
 cur=root;
-while(cur!=NULL&& item>cur->info)
+while(cur!=NULL&& item<cur->info)
 {
  prev=cur;
 
@@ -56,19 +56,33 @@ while(cur!=NULL&& item>cur->info)
  temp->llink=prev;
  return root;
  }
-NODE deletef(NODE root)
+NODE deleter(NODE root)
 {
-	NODE cur;
+	NODE cur,prev;
 	if(root==NULL)
 	{
 		printf("EMPTY LIST\n");
 		return 0;
 	}
-	cur=root->rlink;
-	printf("The deleted item s %d",root->info);
+	if(root->rlink==NULL)
+	{
+	printf("ihe deleted item is %d\n",root->info);
 	free(root);
-	return cur;
+	return NULL;
+	}
+	prev=NULL;
+	cur=root;
+	while(cur->rlink!=NULL)
+	{
+	prev=cur;
+	cur=cur->rlink;
+	}
+	prev->rlink=NULL;
+	printf("item deleted is %d\n",cur->info);
+	free(cur);
+	return root;
 }
+
  void display(NODE root)
 
  {
@@ -94,13 +108,12 @@ printf("%d\t",curr->info);
  int main()
 
  {
- NODE root,head;
-head->llink=head;
+ NODE root;
  root=NULL;
  int item,i;
  for(;;)
  {
- printf("enter 1 to input element in list,2 delete front 3 to display\n");
+ printf("enter 1 to input element in list,2 delete rear 3 to display\n");
  scanf("%d",&i);
  switch(i)
  {
@@ -109,7 +122,7 @@ head->llink=head;
  scanf("%d",&item);
  root=i_order(root,item);
  break;
-case 2: root=deletef(root);
+case 2: root=deleter(root);
 	break;
 
  case 3:
@@ -119,4 +132,3 @@ case 2: root=deletef(root);
  }
  return 0;
 }
-
