@@ -1,0 +1,102 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+#include<ctype.h>
+struct node
+{
+int info;
+struct node *llink;
+struct node *rlink;
+};
+typedef struct node *NODE;
+
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+if(x==NULL)
+{
+printf("Out of memory \n");
+exit(0);
+}	
+return x;
+}
+
+NODE create(char postfix[])
+{	
+int i,k;
+char symbol;
+NODE st[20];
+NODE temp;
+for(i=k=0;(symbol=postfix[i])!='\0';i++)
+{
+temp=getnode();
+temp->info=symbol;
+temp->llink=temp->rlink=NULL;
+if(isalnum(symbol))
+{
+st[k++]=temp;
+}
+else
+{
+temp->rlink=st[--k];
+temp->llink=st[--k];
+st[k++]=temp;
+}
+}
+printf("%c",temp->info);	
+return st[--k];
+}
+
+float eval(NODE root)
+{
+	float num;
+	switch(root->info)
+	{
+		case'+':return eval(root->llink)+eval(root->rlink);
+		case'-':return eval(root->llink)-eval(root->rlink);
+		case'*':return eval(root->llink)*eval(root->rlink);
+		case'/':return eval(root->llink)/eval(root->rlink);
+		case'^':
+		case'$':
+			return pow(eval(root->llink),eval(root->rlink));
+
+default:
+if(isalpha(root->info))
+	{
+	printf("%c= ",root->info);
+	canf("%f",&num);
+	return num;
+	}
+	else
+	return root->info-'0';
+	}
+}
+void display(NODE root,int level)
+{
+    int i;
+    if(root==NULL) return;
+    display(root->rlink,level+1);
+    for(i=0;i<level;i++) printf("  ");
+    printf("%c\n",root->info);
+    display(root->llink,level+1);
+}
+
+void main()
+{
+	
+	char postfix[20];
+	float res;	
+	NODE root;
+	root=NULL;
+	printf("enter the postfix");
+	scanf("	%s",postfix);
+	root=create(postfix);
+	printf("The tree is \n");
+	display(root,1);
+	printf("Result is \n");
+	res=eval(root);
+	printf("Result= %f \n",res);
+}
