@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+struct node
+{
+int info;
+struct node *link;
+};
+typedef struct node* NODE;
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+if(x==NULL)
+{
+printf("memorry allocation not possible\n");
+return 0;
+}
+return x;
+}
+void freenode(NODE x)
+{
+free(x);
+}
+NODE insert_front(NODE last,int item)
+{
+NODE temp;
+temp=getnode();
+temp->info=item;
+if(last==NULL)
+last=temp;
+else
+temp->link=last->link;
+last->link=temp;
+return last;
+}
+NODE delete_front(NODE last)
+{
+NODE first;
+if(last==NULL)
+{
+printf("empty list. canot delete\n");
+return last;
+}
+if(last->link==last)
+{
+printf(" deleted item is %d\n",last->info);
+free(last);
+return NULL;
+}
+first=last->link;
+last->link=first->link;
+printf("%d\n",first->info);
+free(first);
+return last;
+}
+void display(NODE last)
+{
+NODE temp;
+if(last==NULL)
+{
+printf("empty list\n");
+return;
+}
+for(temp=last->link;temp!=last;temp=temp->link)
+{
+printf("%d\n",temp->info);
+}
+printf("%d\n",temp->info);
+}
+void main()
+{
+NODE last;
+int ch,item;
+last=NULL;
+for(;;)
+{
+printf("1.insert front\n2.delete front\n 3.display\n 4.exit\n");
+printf("enter the choice\n");
+scanf("%d",&ch);
+switch(ch)
+{
+case 1: printf("enter the item\n");
+	scanf("%d",&item);
+	last=insert_front(last,item);
+	break;
+case 2: last=delete_front(last);
+	break;
+
+case 3: display(last);
+	break;
+default: exit(0);
+}
+}
+}
