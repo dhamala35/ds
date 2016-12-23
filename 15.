@@ -1,0 +1,242 @@
+#include<stdio.h>
+
+ #include<stdlib.h>
+
+#include<malloc.h>
+struct node
+ {
+
+ int info;
+
+struct node *llink;
+
+struct node *rlink;
+};
+typedef struct node *NODE;
+
+ NODE getnode()
+
+ {
+
+NODE x;
+
+ x=(NODE)malloc(sizeof(struct node));
+
+ if(x==NULL)
+
+ {
+
+printf("out of memory \n");
+
+ }
+ return x;
+
+ }
+
+
+ NODE insert(int item ,int pos, NODE head)
+
+ {
+
+ NODE temp;
+
+ NODE prev,cur;
+
+ temp=getnode();
+
+ temp->info=item;
+
+ temp->llink=temp->rlink=NULL;
+
+ if(head==NULL && pos==1)return temp;
+
+ /*if(head==NULL)
+
+ {
+
+ printf("not possible");
+
+ return head;
+
+ }*/
+
+
+
+ if(pos==1)
+
+ {
+
+ temp->rlink=head;
+
+ head->llink=temp;
+
+ return temp;
+ }
+
+ prev=NULL;
+
+ cur=head;
+
+ int count=1;
+ while(cur!=NULL && count!=pos)
+
+ {
+ prev=cur;
+ cur=cur->rlink;
+ count++;
+
+ }
+ if(count==pos)
+ {
+ prev->rlink=temp;
+ temp->llink=prev;
+
+ temp->rlink=cur;
+
+ if(cur!=NULL)
+
+ {
+
+ cur->llink=temp;
+
+ }
+
+ return head;
+
+ }
+
+ /*printf("Not possible \n");
+
+ return head;*/
+
+ }
+
+
+ NODE del(NODE head)
+
+ {
+
+ NODE prev;
+
+ NODE cur;
+
+ if(head==NULL)
+
+ {
+
+ printf("empty list \n");
+ return NULL;
+ }
+
+ if(head->rlink==NULL)
+
+ {
+
+printf("deleted is %d ",head->info);
+ free(head);
+ return NULL;
+
+ }
+
+ prev=NULL;
+
+ cur=head;
+
+ while(cur->rlink!=NULL)
+
+ {
+
+ prev=cur;
+ cur=cur->rlink;
+
+ }
+
+printf("deleted is %d \n",cur->info);
+
+ free(cur);
+ prev->rlink=NULL;
+
+return head;
+}
+ void display(NODE head)
+
+ {
+
+ if(head==NULL)
+
+ {
+
+ printf("List is empty \n");
+
+ return;
+
+ }
+
+ NODE cur;
+
+ cur=head;
+
+ while(cur!=NULL)
+
+ {
+
+ printf("%d",cur->info);
+ cur=cur->rlink;
+ }
+ }
+
+ void main()
+ {
+ int choice,item,pos;
+ NODE head=NULL;
+
+
+ for(;;)
+
+ {
+
+ printf("1. IP 2.DR 3.Display 4.Exit");
+
+ scanf("%d",&choice);
+
+ switch(choice)
+
+ {
+
+ case 1:
+
+ printf("enter position \n");
+
+ scanf("%d",&pos);
+
+ printf("enter item \n");
+
+ scanf("%d",&item);
+
+ head=insert(item,pos,head);
+
+ break;
+
+ case 2:
+
+ del(head);
+
+ break;
+
+
+
+ case 3:
+
+ display(head);
+
+ break;
+
+
+
+ default:
+
+ exit(0);
+
+ }}
+
+ }
