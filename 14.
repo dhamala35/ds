@@ -1,0 +1,229 @@
+#include<stdio.h>
+
+ #include<malloc.h>
+
+ #include<stdlib.h>
+
+ struct node
+
+ {
+
+ int info;
+
+ struct node *llink;
+
+ struct node *rlink;
+
+ };
+
+ typedef struct node *NODE;
+
+ NODE getnode()
+
+ {
+
+ NODE x;
+
+ x=(NODE)malloc(sizeof(struct node));
+
+ if(x==NULL)
+
+ {
+
+ printf("out of memory \n");
+
+ exit(0);
+
+ }
+
+ return x;
+
+ }
+
+ NODE insert(int item,NODE head)
+
+ {
+
+ NODE temp;
+
+ temp=getnode();
+
+ temp->info=item;
+
+ temp->llink=temp->rlink=NULL;
+ if(head==NULL)return temp;
+
+ temp->rlink=head;
+
+ head->llink=temp;
+
+ return temp;
+
+ }
+
+ NODE del(int item,int pos,NODE head)
+
+ {
+
+ if(head==NULL)
+
+ {
+
+ printf("empty list \n");
+
+ return NULL;
+
+ }
+
+ if(head->rlink==NULL && pos==1)
+
+ { 
+printf("deleted item is %d \n",head);
+
+ free(head);
+
+ return NULL;
+
+ }
+
+ if(pos==1)
+
+ {
+
+ NODE second;
+
+ second=head->rlink;
+
+ second->llink=head;
+
+ free(head);
+
+ return second;
+
+ }
+
+ NODE prev,cur;
+
+ prev=NULL;
+
+ cur=head;
+
+ int count=1;
+
+ while(cur!=NULL && count!=pos)
+
+ {
+
+ prev=cur;
+
+ cur=cur->rlink;
+
+ count++;
+
+ }
+
+ if(count=pos)
+
+ {
+
+ prev->rlink=cur->rlink;
+
+ cur->llink=prev;
+
+ printf("item deleted is %d \n",cur->info);
+
+ free(cur);
+
+ return head;
+
+ }
+
+ printf("not possible \n");
+
+ return head;
+
+ }
+
+ void display(NODE head)
+
+ {
+
+ if(head==NULL)
+
+ {
+
+ printf("empty list \n");
+
+ return;
+
+}
+
+ NODE cur;
+
+ cur=head;
+
+ while(cur!=NULL)
+
+ {
+
+ printf("%d",cur->info);
+ cur=cur->rlink;
+
+ }
+ }
+
+void main()
+
+ {
+
+ int pos,choice,item;
+
+ NODE head;
+
+ head=NULL;
+
+ for(;;)
+
+ {
+
+ printf("1.IF 2.DP 3.Display 4.Exit \n");
+
+ scanf("%d",&choice);
+
+ switch(choice)
+
+ {
+
+ case 1:
+
+ printf("enter item \n");
+
+ scanf("%d",&item);
+
+ head=insert(item,head);
+ break;
+
+ case 2:
+
+ printf("enter position \n");
+
+ scanf("%d",&pos);
+
+ head=del(item,pos,head);
+
+ break;
+
+
+
+
+
+ case 3:
+ display(head);
+
+ break;
+default:exit(0);
+}
+
+}
+
+}
