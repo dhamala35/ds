@@ -1,0 +1,158 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+struct node
+{
+int info;
+struct node *link;
+};
+typedef struct node* NODE;
+NODE getnode()
+{
+NODE x;
+x=(NODE)malloc(sizeof(struct node));
+if(x==NULL)
+{
+printf("node creation error\n");
+return 0;
+}
+return x;
+}
+NODE insert_front(NODE first,int item)
+{
+NODE temp;
+temp=getnode();
+temp->info=item;
+temp->link=NULL;
+temp->link=first;
+return temp;
+}
+
+/*NODE delete_pos(NODE first, int pos)
+{
+	int count = 1;
+	NODE temp, cur, prev;
+	
+	if(first == NULL)
+	{
+		printf("List is empty. Cannot delete\n");
+		return first;
+	}
+	
+	/*if(first->link == NULL && pos > 1)
+	{
+		printf("Invalid position to delete\n");
+		return first;
+	}
+
+	if(pos == 1)
+	{
+		temp = first->link;
+	printf("deleted item is %d\n",first->info);
+		free(first);
+		return temp;
+	}
+	
+	cur = first;
+	prev = NULL;
+	
+	while(cur != NULL && pos != count)
+	{
+		prev = cur;
+		cur = cur->link;
+		count++;
+	}
+	
+	if(cur == NULL && pos >= count)
+	{
+		printf("Invalid position to delete\n");
+		return first;
+	}
+	
+	prev->link = cur->link;
+	printf("Item deleted is: %d\n", cur->info);
+	free(cur);
+	return first;
+}
+*/
+NODE delete_pos(NODE first,int pos)
+{
+int count=1;
+NODE prev,cur,temp;
+if(first==NULL)
+{
+printf("empty list\n");
+return first;
+}
+/*if(first->link==NULL && pos>1)
+{
+printf("invalid position\n");
+return first;
+}*/
+if(pos==1)
+{
+temp=first->link;
+printf("item deleted is %d\n",first->info);
+return temp;
+}
+cur=first;
+prev=NULL;
+while(cur!=NULL && pos!= count)
+{
+prev=cur;
+cur=cur->link;
+count++;
+}
+if(cur == NULL && pos >= count)
+	{
+		printf("Invalid position to delete\n");
+		return first;
+	}
+	
+	prev->link = cur->link;
+	printf("Item deleted is: %d\n", cur->info);
+	free(cur);
+	return first;
+}
+
+ void display(NODE first)
+{
+NODE cur;
+if(first==NULL)
+{
+printf("empty list\n");
+return ;
+}
+for(cur=first;cur!=NULL;cur=cur->link)
+{
+printf("%d\t",cur->info);
+}
+}
+void main()
+{
+NODE first;
+first=NULL;
+int ch,item,pos;
+for(;;)
+{
+printf("enter the choice\n");
+printf("1.insert front 2.delete_pos 3.display\n");
+scanf("%d",&ch);
+switch(ch)
+{
+case 1: printf("enter the item\n");
+scanf("%d",&item);
+first=insert_front(first,item);
+break;
+case 2: printf("enter the position to be delete\n");
+scanf("%d",&pos);
+first=delete_pos(first,pos);
+break;
+case 3:
+
+display(first);
+break;
+default:exit(0);
+}
+}
+}
